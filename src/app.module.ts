@@ -1,16 +1,15 @@
 import { Module } from '@nestjs/common'
 import { ConfigModule, ConfigService } from '@nestjs/config'
 import { UsersModule } from './users/users.module.js';
-import Config from 'bootstrap/js/src/util/config.js'
 import { SequelizeModule } from '@nestjs/sequelize'
-import { config } from 'dotenv'
+import { User } from './users/users.model.js'
 
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: '.env'
+      envFilePath: '.env.development',
     }),
 
     SequelizeModule.forRootAsync({
@@ -25,6 +24,7 @@ import { config } from 'dotenv'
 
         autoLoadModels: true,
         synchronize: false,
+        models: [User],
       }),
     }),
     

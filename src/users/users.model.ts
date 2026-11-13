@@ -1,11 +1,20 @@
 import { DataTypes } from 'sequelize'
-import { Column, Table } from 'sequelize-typescript'
+import { Column, Model, Table } from 'sequelize-typescript'
 
+interface UserCreationAttrs {
+  id: string
+  name: string
+  username: string
+  email: string
+  password: string
+  subscribers?: string[]
+  subscribes?: string[]
+}
 
 @Table({
   tableName: 'users',
 })
-export class User {
+export class User extends Model<User, UserCreationAttrs> {
 
   @Column({
     type: DataTypes.UUID,
@@ -13,33 +22,33 @@ export class User {
     primaryKey: true,
     allowNull: false,
   })
-  id: string
+  declare id: string
 
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
   })
-  name: string
-
-  @Column({
-    type: DataTypes.STRING,
-    unique: true,
-    allowNull: false,
-  })
-  username: string
+  declare name: string
 
   @Column({
     type: DataTypes.STRING,
     unique: true,
     allowNull: false,
   })
-  email: string
+  declare username: string
+
+  @Column({
+    type: DataTypes.STRING,
+    unique: true,
+    allowNull: false,
+  })
+  declare email: string
 
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
   })
-  password: string
+  declare password: string
 
   @Column({
     type: DataTypes.STRING,
@@ -53,5 +62,5 @@ export class User {
     defaultValue: 0,
     allowNull: false,
   })
-  subscribes: string
+  declare subscribes: string
 }

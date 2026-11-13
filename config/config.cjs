@@ -1,4 +1,9 @@
-require('dotenv').config();
+const dotenv = require('dotenv')
+
+dotenv.config({
+  path: '.env.development',
+  override: true
+})
 
 module.exports = {
   development: {
