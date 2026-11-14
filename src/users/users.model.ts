@@ -20,6 +20,7 @@ export class User extends Model<User, UserCreationAttrs> {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
+    unique: true,
     allowNull: false,
   })
   declare id: string

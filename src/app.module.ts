@@ -1,9 +1,17 @@
-import { Module } from '@nestjs/common'
-import { ConfigModule, ConfigService } from '@nestjs/config'
-import { UsersModule } from './users/users.module.js';
-import { SequelizeModule } from '@nestjs/sequelize'
-import { User } from './users/users.model.js'
 
+import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { SequelizeModule } from '@nestjs/sequelize';
+import { ServeStaticModule } from '@nestjs/serve-static';
+import { join } from 'node:path';
+
+import { UsersModule } from './users/users.module.js';
+import { User } from './users/users.model.js';
+
+import { VideosModule } from './videos/videos.module.js';
+import { Video } from './videos/videos.model.js';
+
+import { FilesModule } from './files/files.module.js';
 
 @Module({
   imports: [
@@ -24,11 +32,18 @@ import { User } from './users/users.model.js'
 
         autoLoadModels: true,
         synchronize: false,
-        models: [User],
+        models: [User, Video],
       }),
     }),
-    
-    UsersModule
+
+    ServeStaticModule.forRoot({
+      rootPath: join(process.cwd(), 'static'),
+      serveRoot: '/static',
+    }),
+
+    UsersModule,
+    VideosModule,
+    FilesModule,
   ],
 })
 export class AppModule {}

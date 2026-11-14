@@ -11,6 +11,7 @@ module.exports = {
         defaultValue: DataTypes.UUIDV4,
         primaryKey: true,
         allowNull: false,
+        unique: true,
       },
 
       name: {
