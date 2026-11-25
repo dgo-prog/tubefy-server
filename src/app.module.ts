@@ -13,6 +13,12 @@ import { Video } from './videos/videos.model.js'
 import { FilesModule } from './files/files.module.js'
 import { MusicModule } from './music/music.module.js'
 import { Music } from './music/music.model.js'
+import { PlaylistsModule } from './playlists/playlists.module.js';
+import { Playlist } from './playlists/playlists.model.js'
+import { VideoPlaylist } from './videos/video-playlists.model.js'
+import { MusicPlaylist } from './music/music-playlists.model.js'
+import { UserSubscription } from './users/user-subscription.model.js'
+import { AuthModule } from './auth/auth.module.js';
 
 @Module({
 	imports: [
@@ -33,7 +39,15 @@ import { Music } from './music/music.model.js'
 
 				autoLoadModels: true,
 				synchronize: false,
-				models: [User, Video, Music]
+				models: [
+          User, 
+          Video, 
+          Music, 
+          Playlist, 
+          VideoPlaylist,
+          MusicPlaylist,
+          UserSubscription
+        ]
 			})
 		}),
 
@@ -45,7 +59,9 @@ import { Music } from './music/music.model.js'
 		UsersModule,
 		VideosModule,
 		FilesModule,
-		MusicModule
+		MusicModule,
+		PlaylistsModule,
+		AuthModule
 	]
 })
 export class AppModule {}

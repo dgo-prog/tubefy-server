@@ -1,14 +1,32 @@
 import { DataTypes } from 'sequelize'
-import { Column, Model, Table } from 'sequelize-typescript'
+import {
+  BelongsToMany,
+  Column,
+  HasMany,
+  Model,
+  Table,
+} from 'sequelize-typescript'
+
+import { Video } from '../videos/videos.model.js'
+import type { Video as VideoType } from '../videos/videos.model.js'
+
+import { Music } from '../music/music.model.js'
+import type { Music as MusicType } from '../music/music.model.js'
+
+import { Playlist } from '../playlists/playlists.model.js'
+import type { Playlist as PlaylistType } from '../playlists/playlists.model.js'
+
+import { UserSubscription } from './user-subscription.model.js'
 
 interface UserCreationAttrs {
-  id: string
+  id?: string
   name: string
   username: string
   email: string
   password: string
-  subscribers?: string[]
-  subscribes?: string[]
+  avatar?: string | null
+  subscribers?: number
+  subscribes?: number
 }
 
 @Table({
@@ -20,7 +38,6 @@ export class User extends Model<User, UserCreationAttrs> {
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
     primaryKey: true,
-    unique: true,
     allowNull: false,
   })
   declare id: string
@@ -53,15 +70,46 @@ export class User extends Model<User, UserCreationAttrs> {
 
   @Column({
     type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 0,
+    allowNull: true,
   })
-  subscribers: string
+  declare avatar: string | null
 
   @Column({
-    type: DataTypes.STRING,
-    defaultValue: 0,
+    type: DataTypes.INTEGER,
     allowNull: false,
+    defaultValue: 0,
   })
-  declare subscribes: string
+  declare subscribers: number
+
+  @Column({
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    defaultValue: 0,
+  })
+  declare subscribes: number
+
+  @HasMany(() => Video)
+  declare videos: VideoType[]
+
+  @HasMany(() => Music)
+  declare music: MusicType[]
+
+  @HasMany(() => Playlist)
+  declare playlists: PlaylistType[]
+
+  @BelongsToMany(
+    () => User,
+    () => UserSubscription,
+    'followerId',
+    'followingId',
+  )
+  declare following: User[]
+
+  @BelongsToMany(
+    () => User,
+    () => UserSubscription,
+    'followingId',
+    'followerId',
+  )
+  declare followers: User[]
 }

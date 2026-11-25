@@ -2,7 +2,7 @@ const dotenv = require('dotenv')
 
 dotenv.config({
   path: '.env.development',
-  override: true
+  override: true,
 })
 
 module.exports = {
@@ -11,7 +11,8 @@ module.exports = {
     password: process.env.DB_PASSWORD,
     database: process.env.DB_NAME,
     host: process.env.DB_HOST,
-    port: process.env.DB_PORT,
+    port: Number(process.env.DB_PORT),
     dialect: 'postgres',
-  }
+    logging: console.log,
+  },
 }

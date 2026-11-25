@@ -32,7 +32,7 @@ module.exports = {
 
       preview: {
         type: DataTypes.STRING(100),
-        allowNull: false,
+        allowNull: true,
         unique: true,
       },
 

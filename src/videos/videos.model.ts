@@ -1,22 +1,34 @@
-import { DataTypes } from 'sequelize';
+import { DataTypes } from 'sequelize'
 import {
+  BelongsTo,
+  BelongsToMany,
   Column,
+  ForeignKey,
   Model,
   Table,
-} from 'sequelize-typescript';
+} from 'sequelize-typescript'
+
+import { User } from '../users/users.model.js'
+import type { User as UserType } from '../users/users.model.js'
+
+import { Playlist } from '../playlists/playlists.model.js'
+import type { Playlist as PlaylistType } from '../playlists/playlists.model.js'
+
+import { VideoPlaylist } from './video-playlists.model.js'
 
 interface VideoCreationAttrs {
-  id?: string;
-  name: string;
-  description: string;
-  video: string;
-  preview?: string | null;
+  id?: string
+  name: string
+  description: string
+  video: string
+  preview?: string | null
 }
 
 @Table({
   tableName: 'videos',
 })
 export class Video extends Model<Video, VideoCreationAttrs> {
+
   @Column({
     type: DataTypes.UUID,
     defaultValue: DataTypes.UUIDV4,
@@ -24,30 +36,46 @@ export class Video extends Model<Video, VideoCreationAttrs> {
     unique: true,
     primaryKey: true,
   })
-  declare id: string;
+  declare id: string
 
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
   })
-  declare name: string;
+  declare name: string
 
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
   })
-  declare description: string;
+  declare description: string
 
   @Column({
     type: DataTypes.STRING,
     allowNull: false,
     unique: true,
   })
-  declare video: string;
+  declare video: string
 
   @Column({
     type: DataTypes.STRING,
     allowNull: true,
   })
-  declare preview: string | null;
+  declare preview: string | null
+
+  @ForeignKey(() => User)
+  @Column({
+    type: DataTypes.UUID,
+    allowNull: false,
+  })
+  declare userId: string
+
+  @BelongsTo(() => User)
+  declare user: UserType
+
+  @BelongsToMany(
+    () => Playlist,
+    () => VideoPlaylist,
+  )
+  declare playlists: PlaylistType[]
 }

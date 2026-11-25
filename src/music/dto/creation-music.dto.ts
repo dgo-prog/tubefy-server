@@ -1,8 +1,14 @@
+import { IsString } from 'class-validator'
 
 
 export class MusicCreationDto {
-  declare readonly id: string
+
+  @IsString()
   declare readonly name: string
+
+  @IsString()
   declare readonly description: string
+
+  @IsString()
   declare readonly album: string
 }
