@@ -22,6 +22,7 @@ interface VideoCreationAttrs {
   description: string
   video: string
   preview?: string | null
+  userId: string
 }
 
 @Table({

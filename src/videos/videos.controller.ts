@@ -5,8 +5,10 @@ import {
   Get,
   Param,
   Post,
+  Req,
   Res,
   UploadedFiles,
+  UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 
@@ -18,6 +20,8 @@ import { VideosService } from './videos.service.js';
 import { createUploadOptions } from '../files/files.multer.js';
 
 import type { Express, Response } from 'express';
+import { JwtAuthGuard } from '../auth/guards/jwt-auth/jwt-auth.guard.js'
+import { CurrentUser } from '../auth/decorators/current-user/current-user.decorator.js'
 
 @Controller('videos')
 export class VideosController {
@@ -38,6 +42,8 @@ export class VideosController {
       }),
     ),
   )
+
+  @UseGuards(JwtAuthGuard)
   createVideo(
     @Body() dto: VideoCreationDto,
     @UploadedFiles()
@@ -45,8 +51,9 @@ export class VideosController {
       video?: Express.Multer.File[];
       image?: Express.Multer.File[];
     },
+    @CurrentUser('id') userId: string
   ) {
-    return this.videosService.createVideo(dto, files);
+    return this.videosService.createVideo(dto, files, userId);
   }
 
   @Get() 

@@ -30,8 +30,6 @@ export class AuthService {
 			)
 		}
 
-    console.log('EMAIL CANDIDATE:', candidate)
-
 		const usernameCandidate = await this.userRepository.findOne({
 			where: { username: dto.username }
 		})
